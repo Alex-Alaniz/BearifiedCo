@@ -24,6 +24,7 @@ export function RainbowButton({
   const [isHovered, setIsHovered] = useState(false)
   const [speed, setSpeed] = useState(8)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const currentSpeedRef = useRef(8)
 
   useEffect(() => {
     return () => {
@@ -41,21 +42,27 @@ export function RainbowButton({
         clearInterval(intervalRef.current)
       }
 
-      intervalRef.current = setInterval(
-        () => {
-          setSpeed((prevSpeed) => {
-            const newSpeed = Math.max(0.5, prevSpeed * 0.75) // Speed up by 25% each half lap
-            return newSpeed
-          })
-        },
-        (speed * 1000) / 2,
-      ) // Divide by 2 to trigger every half lap
+      const startSpeedIncrement = () => {
+        intervalRef.current = setInterval(
+          () => {
+            setSpeed((prevSpeed) => {
+              const newSpeed = Math.max(0.5, prevSpeed * 0.75)
+              currentSpeedRef.current = newSpeed
+              return newSpeed
+            })
+          },
+          (currentSpeedRef.current * 1000) / 2,
+        )
+      }
+
+      startSpeedIncrement()
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
         intervalRef.current = null
       }
       setSpeed(8)
+      currentSpeedRef.current = 8
     }
 
     return () => {
@@ -63,7 +70,7 @@ export function RainbowButton({
         clearInterval(intervalRef.current)
       }
     }
-  }, [isHovered, speed, isStatic])
+  }, [isHovered, isStatic])
 
   const content = (
     <div
@@ -72,10 +79,8 @@ export function RainbowButton({
       onMouseLeave={() => setIsHovered(false)}
     >
       {isStatic ? (
-        // Static rainbow border - no spinning, always visible
         <div className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,#ff0000_0%,#ffff00_14%,#00ff00_28%,#00ffff_42%,#0000ff_56%,#ff00ff_70%,#ff0000_84%,#ffff00_100%)] opacity-100" />
       ) : (
-        // Animated rainbow border - spins on hover
         <div
           className="absolute inset-[-100%] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,#ff0000_60%,#ffff00_67%,#00ff00_74%,#00ffff_81%,#0000ff_88%,#ff00ff_95%,#ff0000_100%)] opacity-100"
           style={{
