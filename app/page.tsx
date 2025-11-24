@@ -3,8 +3,8 @@
 import { useState } from "react"
 import DynamicFrameLayout from "../components/DynamicFrameLayout"
 import { ppEditorialNewUltralightItalic, inter } from "./fonts"
-import Link from "next/link"
 import { IntakeForm } from "../components/IntakeForm"
+import { RainbowButton } from "../components/RainbowButton"
 
 export default function Home() {
   const [headerSize] = useState(1.2) // 120% is the default size
@@ -18,7 +18,7 @@ export default function Home() {
       <div className="w-full h-full flex flex-col md:flex-row items-start gap-8 md:gap-8">
         {/* Left Content */}
         <div className="w-full md:w-[260px] flex-shrink-0 flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-16">
+          <div className="flex flex-col gap-12">
             <h1
               className={`${ppEditorialNewUltralightItalic.className} text-4xl md:text-6xl font-light italic text-white/80 tracking-tighter leading-[130%]`}
               style={{ fontSize: `${4 * headerSize}rem` }}
@@ -44,21 +44,25 @@ export default function Home() {
                 <div className="h-px bg-white/10 w-full" />
               </div>
             </div>
-            <Link
-              href="https://www.bearified.xyz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="opacity-80 hover:opacity-100 transition-opacity"
-            >
-              <div className="text-white/60 font-light text-sm tracking-wider">Bearified™ Labs</div>
-            </Link>
+
+            <div className="flex flex-col gap-4">
+              <RainbowButton href="https://www.bearified.xyz" target="_blank">
+                Bearified™ Labs
+              </RainbowButton>
+              <RainbowButton href="https://roadmap.bearified.co/" target="_blank">
+                Roadmap (Path to $1B)
+              </RainbowButton>
+              <RainbowButton href="https://founderos.bearified.co/" target="_blank">
+                FounderOS
+              </RainbowButton>
+            </div>
           </div>
-          <button
-            onClick={() => setIsFormOpen(true)}
-            className="inline-block px-6 py-3 text-white/70 border border-purple-500/50 rounded-full font-medium hover:bg-purple-500/10 transition-colors text-center w-full max-w-[260px] text-sm mt-16"
-          >
-            Work With Us
-          </button>
+
+          <div className="mt-12 w-full">
+            <RainbowButton onClick={() => setIsFormOpen(true)} static>
+              Work With Us
+            </RainbowButton>
+          </div>
         </div>
 
         {/* Right Content */}
